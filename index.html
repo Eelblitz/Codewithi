@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Portfolio</title>
   <style>
-    /* Original styles preserved + responsive additions */
     body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; color: #333; }
     header { padding: 40px; text-align: center; background: #111; color: #fff; }
-    nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #222; align-items: center; }
+    nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #222; }
     nav a { color: #fff; text-decoration: none; cursor: pointer; font-weight: bold; }
     .section { max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 10px; display: none; opacity: 0; transition: opacity 0.4s ease; }
     .active { display: block; opacity: 1; }
@@ -18,29 +17,30 @@
     form button { padding: 10px 20px; border: none; background: #111; color: #fff; border-radius: 5px; cursor: pointer; }
     footer { text-align: center; padding: 20px; color: #777; }
 
-    /* Responsive additions (do not change structure) */
-    @media (max-width: 800px) {
-      header { padding: 28px; }
-      nav { gap: 12px; padding: 12px; }
-      nav a { font-size: 0.95rem; }
-      .section { margin: 24px 12px; padding: 16px; }
-      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; }
+    /* Minimal responsive additions (no structural HTML changes) */
+    @media (max-width: 900px) {
+      .section { margin: 28px 20px; }
+      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; }
     }
 
-    @media (max-width: 520px) {
-      nav { justify-content: space-between; padding: 10px; }
-      /* allow nav links to wrap and be hidden behind toggle */
-      nav .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; }
-      nav .links.hidden { display: none; }
-      /* make nav links occupy full width when stacked */
-      nav .links a { display: inline-block; padding: 8px 10px; }
-      .menu-toggle { display: inline-block; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; }
-      .section { margin: 18px 10px; padding: 14px; }
+    @media (max-width: 600px) {
+      header { padding: 28px 16px; }
+      nav { padding: 10px 12px; gap: 8px; justify-content: flex-start; position: relative; }
+      nav a { font-size: 0.95rem; }
+      /* nav links hidden by default on small screens; JS will toggle nav.responsive */
+      nav a { display: none; }
+      nav.responsive a { display: block; width: 100%; text-align: center; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.03); }
+      /* small button inserted at runtime via JS (class .nav-toggle) */
+      .section { margin: 20px 12px; padding: 16px; }
       .projects, .services-list, .skills-list, .testimonials { grid-template-columns: 1fr; }
     }
 
-    /* small accessibility tweak */
-    .menu-toggle:focus { outline: 2px solid #fff; outline-offset: 2px; }
+    @media (min-width: 601px) {
+      nav a { display: inline-block; }
+    }
+
+    /* Accessibility focus */
+    .nav-toggle:focus { outline: 2px solid #fff; outline-offset: 2px; }
   </style>
 </head>
 <body>
@@ -50,17 +50,13 @@
   </header>
 
   <nav>
-    <!-- We'll wrap existing links in a container (.links) so the CSS/JS can toggle visibility without changing link markup -->
-    <button class="menu-toggle" aria-expanded="true" aria-controls="nav-links" style="display:none;">☰</button>
-    <div class="links" id="nav-links">
-      <a onclick="showPage('home')">Home</a>
-      <a onclick="showPage('about')">About</a>
-      <a onclick="showPage('skills')">Skills</a>
-      <a onclick="showPage('services')">Services</a>
-      <a onclick="showPage('projects')">Projects</a>
-      <a onclick="showPage('testimonials')">Testimonials</a>
-      <a onclick="showPage('contact')">Contact</a>
-    </div>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('skills')">Skills</a>
+    <a onclick="showPage('services')">Services</a>
+    <a onclick="showPage('projects')">Projects</a>
+    <a onclick="showPage('testimonials')">Testimonials</a>
+    <a onclick="showPage('contact')">Contact</a>
   </nav>
 
   <section id="home" class="section active">
@@ -115,7 +111,7 @@
     <div class="testimonials">
       <div class="card">“Reliable and creative. Delivers exactly what we need.”</div>
       <div class="card">“Strong technical skill and easy to work with.”</div>
-      <div class="card">“Our digital engagement improved after his work.”div>
+      <div class="card">“Our digital engagement improved after his work.”</div>
       <div class="card">“Professional, responsive, and detail‑oriented.”</div>
     </div>
   </section>
@@ -137,52 +133,78 @@
   </footer>
 
   <script>
-    /* Keep original showPage behavior */
+    // Keep original showPage behavior
     function showPage(pageId) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
-
-      // if mobile nav is open, close it after clicking a link
-      var links = document.getElementById('nav-links');
-      if (links && links.classList.contains('hidden')) {
-        links.classList.add('hidden');
-      }
     }
 
-    /* Responsive behavior: show a simple toggle button on small screens */
-    (function() {
-      var toggle = document.querySelector('.menu-toggle');
-      var links = document.getElementById('nav-links');
+    /* Minimal responsive JS (non-structural): adds a small toggle button at runtime and toggles nav links on small screens */
+    (function(){
+      var nav = document.querySelector('nav');
+      if (!nav) return;
 
-      function updateToggleVisibility() {
-        if (window.innerWidth <= 520) {
-          toggle.style.display = 'inline-block';
-          // start with links visible on wider screens, hidden on mobile
-          if (!links.classList.contains('hidden')) {
-            links.classList.add('hidden');
-            toggle.setAttribute('aria-expanded', 'false');
+      // create toggle button (inserted via JS so HTML is unchanged)
+      var btn = document.createElement('button');
+      btn.className = 'nav-toggle';
+      btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Toggle navigation');
+      btn.style.display = 'none';
+      btn.innerHTML = '☰';
+
+      // style the button minimally via inline styles so no CSS structural change is required
+      btn.style.background = 'transparent';
+      btn.style.border = 'none';
+      btn.style.color = '#fff';
+      btn.style.fontSize = '22px';
+      btn.style.cursor = 'pointer';
+      btn.style.position = 'absolute';
+      btn.style.right = '12px';
+      btn.style.top = '8px';
+      btn.style.padding = '6px';
+
+      // ensure nav has relative positioning to place the button correctly
+      if (getComputedStyle(nav).position === 'static') {
+        nav.style.position = 'relative';
+      }
+
+      btn.addEventListener('click', function(){
+        var open = nav.classList.toggle('responsive');
+        btn.setAttribute('aria-expanded', String(open));
+        // show/hide anchors visually
+        var anchors = nav.querySelectorAll('a');
+        anchors.forEach(function(a){
+          a.style.display = open ? 'block' : 'none';
+        });
+      });
+
+      nav.appendChild(btn);
+
+      // update behavior on load/resize
+      function update() {
+        var anchors = nav.querySelectorAll('a');
+        if (window.innerWidth <= 600) {
+          btn.style.display = 'inline-block';
+          // hide anchors by default (unless nav.responsive)
+          if (!nav.classList.contains('responsive')) {
+            anchors.forEach(function(a){ a.style.display = 'none'; });
+            btn.setAttribute('aria-expanded','false');
+          } else {
+            anchors.forEach(function(a){ a.style.display = 'block'; });
+            btn.setAttribute('aria-expanded','true');
           }
         } else {
-          toggle.style.display = 'none';
-          links.classList.remove('hidden');
-          toggle.setAttribute('aria-expanded', 'true');
+          // desktop: show anchors inline
+          btn.style.display = 'none';
+          nav.classList.remove('responsive');
+          anchors.forEach(function(a){ a.style.display = 'inline-block'; });
+          btn.setAttribute('aria-expanded','false');
         }
       }
 
-      // toggle click handler
-      toggle.addEventListener('click', function() {
-        if (links.classList.contains('hidden')) {
-          links.classList.remove('hidden');
-          toggle.setAttribute('aria-expanded', 'true');
-        } else {
-          links.classList.add('hidden');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      // update on resize and load
-      window.addEventListener('resize', updateToggleVisibility);
-      window.addEventListener('load', updateToggleVisibility);
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
     })();
   </script>
 </body>
