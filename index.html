@@ -16,31 +16,6 @@
     form input, form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
     form button { padding: 10px 20px; border: none; background: #111; color: #fff; border-radius: 5px; cursor: pointer; }
     footer { text-align: center; padding: 20px; color: #777; }
-
-    /* Minimal responsive additions (no structural HTML changes) */
-    @media (max-width: 900px) {
-      .section { margin: 28px 20px; }
-      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; }
-    }
-
-    @media (max-width: 600px) {
-      header { padding: 28px 16px; }
-      nav { padding: 10px 12px; gap: 8px; justify-content: flex-start; position: relative; }
-      nav a { font-size: 0.95rem; }
-      /* nav links hidden by default on small screens; JS will toggle nav.responsive */
-      nav a { display: none; }
-      nav.responsive a { display: block; width: 100%; text-align: center; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.03); }
-      /* small button inserted at runtime via JS (class .nav-toggle) */
-      .section { margin: 20px 12px; padding: 16px; }
-      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: 1fr; }
-    }
-
-    @media (min-width: 601px) {
-      nav a { display: inline-block; }
-    }
-
-    /* Accessibility focus */
-    .nav-toggle:focus { outline: 2px solid #fff; outline-offset: 2px; }
   </style>
 </head>
 <body>
@@ -61,7 +36,7 @@
 
   <section id="home" class="section active">
     <h2>Introduction</h2>
-    <p>I am a Website Designer, UI/UX Designer, Software Engineer, Content Creator, Database Manager, and Data Analyst dedicated to building digital experiences that help people connect with the product or service.</p>
+    <p>I am a Website Designer, UI/UX Designer, Software Engineer, Content Creator, Database Manager, and Data Analyst dedicated to building digital experiences that help people connect with the products and services they need.</p>
     <p>I specialize in user‑centered interfaces, scalable web solutions, and data insights that support business growth.</p>
     <p>I have contributed to projects for CCigol System, Nasarawa State College of Health Sciences and Technology, and BusinessInward.</p>
   </section>
@@ -133,79 +108,10 @@
   </footer>
 
   <script>
-    // Keep original showPage behavior
     function showPage(pageId) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
     }
-
-    /* Minimal responsive JS (non-structural): adds a small toggle button at runtime and toggles nav links on small screens */
-    (function(){
-      var nav = document.querySelector('nav');
-      if (!nav) return;
-
-      // create toggle button (inserted via JS so HTML is unchanged)
-      var btn = document.createElement('button');
-      btn.className = 'nav-toggle';
-      btn.type = 'button';
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', 'Toggle navigation');
-      btn.style.display = 'none';
-      btn.innerHTML = '☰';
-
-      // style the button minimally via inline styles so no CSS structural change is required
-      btn.style.background = 'transparent';
-      btn.style.border = 'none';
-      btn.style.color = '#fff';
-      btn.style.fontSize = '22px';
-      btn.style.cursor = 'pointer';
-      btn.style.position = 'absolute';
-      btn.style.right = '12px';
-      btn.style.top = '8px';
-      btn.style.padding = '6px';
-
-      // ensure nav has relative positioning to place the button correctly
-      if (getComputedStyle(nav).position === 'static') {
-        nav.style.position = 'relative';
-      }
-
-      btn.addEventListener('click', function(){
-        var open = nav.classList.toggle('responsive');
-        btn.setAttribute('aria-expanded', String(open));
-        // show/hide anchors visually
-        var anchors = nav.querySelectorAll('a');
-        anchors.forEach(function(a){
-          a.style.display = open ? 'block' : 'none';
-        });
-      });
-
-      nav.appendChild(btn);
-
-      // update behavior on load/resize
-      function update() {
-        var anchors = nav.querySelectorAll('a');
-        if (window.innerWidth <= 600) {
-          btn.style.display = 'inline-block';
-          // hide anchors by default (unless nav.responsive)
-          if (!nav.classList.contains('responsive')) {
-            anchors.forEach(function(a){ a.style.display = 'none'; });
-            btn.setAttribute('aria-expanded','false');
-          } else {
-            anchors.forEach(function(a){ a.style.display = 'block'; });
-            btn.setAttribute('aria-expanded','true');
-          }
-        } else {
-          // desktop: show anchors inline
-          btn.style.display = 'none';
-          nav.classList.remove('responsive');
-          anchors.forEach(function(a){ a.style.display = 'inline-block'; });
-          btn.setAttribute('aria-expanded','false');
-        }
-      }
-
-      window.addEventListener('resize', update);
-      window.addEventListener('load', update);
-    })();
   </script>
 </body>
 </html>
