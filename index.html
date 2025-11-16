@@ -5,117 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Portfolio</title>
   <style>
-    /* Reset + sensible defaults */
-    *, *::before, *::after { box-sizing: border-box; }
-    :root{
-      --bg: #f7f7f7;
-      --card: #fff;
-      --muted: #777;
-      --brand: #111;
-      --nav-bg: #222;
-      --gap: 20px;
-    }
-    html { font-family: Arial, sans-serif; font-size: 16px; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-    body { margin: 0; background: var(--bg); color: #333; line-height: 1.4; }
+    /* Original styles preserved + responsive additions */
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; color: #333; }
+    header { padding: 40px; text-align: center; background: #111; color: #fff; }
+    nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #222; align-items: center; }
+    nav a { color: #fff; text-decoration: none; cursor: pointer; font-weight: bold; }
+    .section { max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 10px; display: none; opacity: 0; transition: opacity 0.4s ease; }
+    .active { display: block; opacity: 1; }
+    .projects, .services-list, .skills-list, .testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
+    .card { background: #fafafa; padding: 20px; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.08); }
+    form input, form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    form button { padding: 10px 20px; border: none; background: #111; color: #fff; border-radius: 5px; cursor: pointer; }
+    footer { text-align: center; padding: 20px; color: #777; }
 
-    /* Responsive typography */
-    h1 { font-size: clamp(1.6rem, 3.6vw, 2.4rem); margin: 0 0 .25rem; letter-spacing: .6px; }
-    h2 { font-size: clamp(1.1rem, 2.4vw, 1.5rem); margin-top: 0; }
-    p { margin: .5rem 0; }
-
-    /* Header */
-    header {
-      padding: clamp(18px, 6vw, 48px);
-      text-align: center;
-      background: var(--brand);
-      color: #fff;
-    }
-    header p { margin: .25rem 0 0; font-size: clamp(.85rem, 1.8vw, 1rem); opacity: .95; }
-
-    /* Navigation with mobile toggle */
-    nav { background: var(--nav-bg); }
-    .nav-inner { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; justify-content:center; gap: var(--gap); padding: 10px 16px; position:relative; }
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.4rem;
-      cursor: pointer;
-      padding: 6px;
-    }
-    .nav-links { display:flex; gap: 16px; flex-wrap:wrap; justify-content:center; }
-    .nav-links a {
-      color: #fff; text-decoration: none; cursor: pointer; font-weight: 700; padding: 6px 8px; border-radius: 6px;
-    }
-    .nav-links a:focus, .nav-links a:hover { background: rgba(255,255,255,0.06); outline: none; }
-
-    /* Primary content sections */
-    .section {
-      width: calc(100% - 40px);
-      max-width: 900px;
-      margin: 28px auto;
-      padding: clamp(14px, 3vw, 24px);
-      background: var(--card);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-      border-radius: 12px;
-      display: none;
-      opacity: 0;
-      transition: opacity .35s ease, transform .25s ease;
-      transform: translateY(6px);
-    }
-    .section.active { display: block; opacity: 1; transform: none; }
-
-    /* Responsive grids */
-    .projects, .services-list, .skills-list, .testimonials {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+    /* Responsive additions (do not change structure) */
+    @media (max-width: 800px) {
+      header { padding: 28px; }
+      nav { gap: 12px; padding: 12px; }
+      nav a { font-size: 0.95rem; }
+      .section { margin: 24px 12px; padding: 16px; }
+      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; }
     }
 
-    .card {
-      background: #fafafa;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    @media (max-width: 520px) {
+      nav { justify-content: space-between; padding: 10px; }
+      /* allow nav links to wrap and be hidden behind toggle */
+      nav .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; }
+      nav .links.hidden { display: none; }
+      /* make nav links occupy full width when stacked */
+      nav .links a { display: inline-block; padding: 8px 10px; }
+      .menu-toggle { display: inline-block; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+      .section { margin: 18px 10px; padding: 14px; }
+      .projects, .services-list, .skills-list, .testimonials { grid-template-columns: 1fr; }
     }
 
-    /* Form */
-    form input, form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #d6d6d6;
-      border-radius: 6px;
-      font-size: 0.95rem;
-    }
-    form button {
-      padding: 10px 18px;
-      border: none;
-      background: var(--brand);
-      color: #fff; border-radius: 6px; cursor: pointer; font-weight:600;
-    }
-
-    footer { text-align: center; padding: 18px 12px; color: var(--muted); font-size: .95rem; }
-
-    /* Small devices: show toggle and collapse nav links */
-    @media (max-width: 720px) {
-      .nav-inner { justify-content: flex-start; padding: 10px 16px; }
-      .menu-toggle { display: block; position: absolute; right: 12px; top: 8px; }
-      .nav-links { display: none; width: 100%; flex-direction: column; gap: 8px; margin-top: 8px; align-items: center; }
-      .nav-links.open { display:flex; }
-      .section { width: calc(100% - 28px); margin: 16px auto; border-radius: 10px; }
-    }
-
-    /* Extra small devices: comfortable spacing and text scaling */
-    @media (max-width: 420px) {
-      h1 { font-size: clamp(1.4rem, 6.5vw, 1.8rem); }
-      .section { padding: 12px; }
-      .nav-links a { padding: 8px 10px; font-size: .95rem; }
-    }
-
-    /* Accessibility focus */
-    a:focus, button:focus { outline: 3px solid rgba(17,17,17,0.12); outline-offset: 3px; }
+    /* small accessibility tweak */
+    .menu-toggle:focus { outline: 2px solid #fff; outline-offset: 2px; }
   </style>
 </head>
 <body>
@@ -125,17 +50,16 @@
   </header>
 
   <nav>
-    <div class="nav-inner">
-      <button class="menu-toggle" aria-expanded="false" aria-controls="navlinks" id="menuToggle" title="Toggle navigation">☰</button>
-      <div id="navlinks" class="nav-links" role="navigation" aria-label="Primary">
-        <a href="#home" data-target="home">Home</a>
-        <a href="#about" data-target="about">About</a>
-        <a href="#skills" data-target="skills">Skills</a>
-        <a href="#services" data-target="services">Services</a>
-        <a href="#projects" data-target="projects">Projects</a>
-        <a href="#testimonials" data-target="testimonials">Testimonials</a>
-        <a href="#contact" data-target="contact">Contact</a>
-      </div>
+    <!-- We'll wrap existing links in a container (.links) so the CSS/JS can toggle visibility without changing link markup -->
+    <button class="menu-toggle" aria-expanded="true" aria-controls="nav-links" style="display:none;">☰</button>
+    <div class="links" id="nav-links">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('about')">About</a>
+      <a onclick="showPage('skills')">Skills</a>
+      <a onclick="showPage('services')">Services</a>
+      <a onclick="showPage('projects')">Projects</a>
+      <a onclick="showPage('testimonials')">Testimonials</a>
+      <a onclick="showPage('contact')">Contact</a>
     </div>
   </nav>
 
@@ -146,13 +70,13 @@
     <p>I have contributed to projects for CCigol System, Nasarawa State College of Health Sciences and Technology, and BusinessInward.</p>
   </section>
 
-  <section id="about" class="section" aria-hidden="true">
+  <section id="about" class="section">
     <h2>About Me</h2>
     <p>I believe design and technology can close the gap between businesses and the people they serve. Every idea has value — it just needs the right digital experience.</p>
     <p>I work across design, development, content, and data, creating solutions that bring people closer to what matters.</p>
   </section>
 
-  <section id="skills" class="section" aria-hidden="true">
+  <section id="skills" class="section">
     <h2>Skills</h2>
     <div class="skills-list">
       <div class="card">HTML, CSS, JavaScript</div>
@@ -164,7 +88,7 @@
     </div>
   </section>
 
-  <section id="services" class="section" aria-hidden="true">
+  <section id="services" class="section">
     <h2>Services</h2>
     <div class="services-list">
       <div class="card">Website Design</div>
@@ -176,7 +100,7 @@
     </div>
   </section>
 
-  <section id="projects" class="section" aria-hidden="true">
+  <section id="projects" class="section">
     <h2>Projects</h2>
     <div class="projects">
       <div class="card"><h3>Project One</h3><p>Modern website interface</p></div>
@@ -186,17 +110,17 @@
     </div>
   </section>
 
-  <section id="testimonials" class="section" aria-hidden="true">
+  <section id="testimonials" class="section">
     <h2>Testimonials</h2>
     <div class="testimonials">
       <div class="card">“Reliable and creative. Delivers exactly what we need.”</div>
       <div class="card">“Strong technical skill and easy to work with.”</div>
-      <div class="card">“Our digital engagement improved after his work.”</div>
+      <div class="card">“Our digital engagement improved after his work.”div>
       <div class="card">“Professional, responsive, and detail‑oriented.”</div>
     </div>
   </section>
 
-  <section id="contact" class="section" aria-hidden="true">
+  <section id="contact" class="section">
     <h2>Contact</h2>
     <p>Phone: 07088880704</p>
     <p>Email: codewithiman@gmail.com</p>
@@ -213,65 +137,53 @@
   </footer>
 
   <script>
-    // Mobile nav toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navlinks');
+    /* Keep original showPage behavior */
+    function showPage(pageId) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
 
-    menuToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      menuToggle.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    // Page navigation: show section, update hash, close mobile menu
-    function showPage(pageId, pushState = true) {
-      document.querySelectorAll('.section').forEach(sec => {
-        sec.classList.remove('active');
-        sec.setAttribute('aria-hidden', 'true');
-      });
-      const target = document.getElementById(pageId);
-      if (!target) return;
-      target.classList.add('active');
-      target.removeAttribute('aria-hidden');
-
-      // update URL hash without scrolling if desired
-      if (pushState) {
-        history.replaceState(null, '', `#${pageId}`);
+      // if mobile nav is open, close it after clicking a link
+      var links = document.getElementById('nav-links');
+      if (links && links.classList.contains('hidden')) {
+        links.classList.add('hidden');
       }
-
-      // close mobile nav if open
-      if (navLinks.classList.contains('open')) {
-        navLinks.classList.remove('open');
-        menuToggle.setAttribute('aria-expanded', 'false');
-      }
-
-      // ensure focus for accessibility
-      target.focus?.();
     }
 
-    // connect nav anchors
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', (e) => {
-        // allow ctrl/cmd click to open in new tab
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        e.preventDefault();
-        const id = a.dataset.target || a.getAttribute('href').replace('#','');
-        showPage(id);
-      });
-    });
+    /* Responsive behavior: show a simple toggle button on small screens */
+    (function() {
+      var toggle = document.querySelector('.menu-toggle');
+      var links = document.getElementById('nav-links');
 
-    // On load, open page matching hash (if present)
-    window.addEventListener('load', () => {
-      const hash = (location.hash || '#home').replace('#','');
-      if (document.getElementById(hash)) showPage(hash, false);
-    });
-
-    // Allow keyboard toggle (Enter/Space) on menu toggle for accessibility
-    menuToggle.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        menuToggle.click();
+      function updateToggleVisibility() {
+        if (window.innerWidth <= 520) {
+          toggle.style.display = 'inline-block';
+          // start with links visible on wider screens, hidden on mobile
+          if (!links.classList.contains('hidden')) {
+            links.classList.add('hidden');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        } else {
+          toggle.style.display = 'none';
+          links.classList.remove('hidden');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
       }
-    });
+
+      // toggle click handler
+      toggle.addEventListener('click', function() {
+        if (links.classList.contains('hidden')) {
+          links.classList.remove('hidden');
+          toggle.setAttribute('aria-expanded', 'true');
+        } else {
+          links.classList.add('hidden');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // update on resize and load
+      window.addEventListener('resize', updateToggleVisibility);
+      window.addEventListener('load', updateToggleVisibility);
+    })();
   </script>
 </body>
 </html>
