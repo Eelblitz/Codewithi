@@ -7,7 +7,8 @@
   <style>
     body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; color: #333; }
     header { padding: 40px; text-align: center; background: #111; color: #fff; }
-    nav { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #222; }
+    nav { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; padding:15px; background:#222; }
+    nav a { color:#fff; text-decoration:none; cursor:pointer; font-weight:bold; padding:8px 12px; }
     nav a { color: #fff; text-decoration: none; cursor: pointer; font-weight: bold; }
     .section { max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 10px; display: none; opacity: 0; transition: opacity 0.4s ease; }
     .active { display: block; opacity: 1; }
@@ -16,12 +17,20 @@
     form input, form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
     form button { padding: 10px 20px; border: none; background: #111; color: #fff; border-radius: 5px; cursor: pointer; }
     footer { text-align: center; padding: 20px; color: #777; }
+  @media (max-width:600px) {
+      header { padding:25px; }
+      header h1 { font-size:1.4rem; }
+      header p { font-size:0.9rem; }
+      .section { margin:20px 10px; padding:15px; }
+      nav a { font-size:0.9rem; }
+    }
   </style>
 </head>
 <body>
   <header>
+    <img src="assets/img/profile.jpg" alt="Profile Photo" style="width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid #fff;margin-bottom:15px;" />
     <h1>MOHAMMED ISAH ATTAH</h1>
-    <p>Website Designer | UI/UX Designer | Consultant | Content Creator </p>
+    <p>Website Designer | UI/UX Designer | Software Engineer | Data Analyst</p>
   </header>
 
   <nav>
@@ -36,15 +45,16 @@
 
   <section id="home" class="section active">
     <h2>Introduction</h2>
-    <p>I am a Website Designer, UI/UX Designer, Content Creator, Database Manager, and Data Analyst dedicated to building digital experiences that help people connect with the products and services they need.</p>
+    <p>I am a Website Designer, UI/UX Designer, Software Engineer, Content Creator, Database Manager, and Data Analyst dedicated to building digital experiences that help people connect with the products and services they need.</p>
     <p>I specialize in user‑centered interfaces, scalable web solutions, and data insights that support business growth.</p>
     <p>I have contributed to projects for CCigol System, Nasarawa State College of Health Sciences and Technology, and BusinessInward.</p>
   </section>
 
   <section id="about" class="section">
     <h2>About Me</h2>
-    <p>I believe design and technology can close the gap between businesses and the people they serve. Every idea has value — it just needs the right digital experience.</p>
-    <p>I work across design, development, content, and data, creating solutions that bring people closer to what matters.</p>
+    <p>I’m someone who enjoys building digital experiences that feel easy, clear, and useful. I’ve learned that good design and thoughtful technology can help businesses connect with the people they want to reach. That belief guides the way I work. I take my time to understand what a project needs, and then I shape it into something that is simple for users and effective for the client.</p>
+    <p>My work covers website design, UI and UX, front‑end development, database management, and data analysis. Each skill gives me a different way to look at a project, whether I’m creating an interface, organizing information, or turning data into something a business can use. I like finding the balance between clean visuals, solid functionality, and clarity.</p>
+    <p>I’ve contributed to projects for CCigol System, Nasarawa State College of Health Sciences and Technology, and BusinessInward. These experiences helped me understand how digital tools can improve workflows and communication, especially in environments where accuracy and accessibility matter. I approach each project with the goal of creating something practical, reliable, and meaningful for the people who will use it.</p>
   </section>
 
   <section id="skills" class="section">
@@ -74,20 +84,36 @@
   <section id="projects" class="section">
     <h2>Projects</h2>
     <div class="projects">
-      <div class="card"><h3>Project One</h3><p>Modern website interface</p></div>
-      <div class="card"><h3>Project Two</h3><p>Business engagement platform</p></div>
-      <div class="card"><h3>Project Three</h3><p>Academic digital workflow tool</p></div>
-      <div class="card"><h3>Project Four</h3><p>Creative portfolio layout</p></div>
+      <div class="card">
+        <img src="assets/img/project1.jpg" alt="Project 1" style="width:100%;border-radius:8px;margin-bottom:10px;">
+        <h3>Project One</h3>
+        <p>Modern website interface</p>
+      </div>
+      <div class="card">
+        <img src="assets/img/project2.jpg" alt="Project 2" style="width:100%;border-radius:8px;margin-bottom:10px;">
+        <h3>Project Two</h3>
+        <p>Business engagement platform</p>
+      </div>
+      <div class="card">
+        <img src="assets/img/project3.jpg" alt="Project 3" style="width:100%;border-radius:8px;margin-bottom:10px;">
+        <h3>Project Three</h3>
+        <p>Academic digital workflow tool</p>
+      </div>
+      <div class="card">
+        <img src="assets/img/project4.jpg" alt="Project 4" style="width:100%;border-radius:8px;margin-bottom:10px;">
+        <h3>Project Four</h3>
+        <p>Creative portfolio layout</p>
+      </div>
     </div>
   </section>
 
   <section id="testimonials" class="section">
     <h2>Testimonials</h2>
     <div class="testimonials">
-      <div class="card">“Reliable and creative. Delivers exactly what we need.”</div>
-      <div class="card">“Strong technical skill and easy to work with.”</div>
-      <div class="card">“Our digital engagement improved after his work.”</div>
-      <div class="card">“Professional, responsive, and detail‑oriented.”</div>
+      <div class="card"><h4>David – CCigol System</h4><p>“Reliable and creative. Delivers exactly what we need.”</p></div>
+      <div class="card"><h4>Sarah – BusinessInward</h4><p>“Strong technical skill and easy to work with.”</p></div>
+      <div class="card"><h4>Samuel – NSCHST Keffi</h4><p>“Our digital engagement improved after his work.”</p></div>
+      <div class="card"><h4>Amaka – Private Client</h4><p>“Professional, responsive, and detail‑oriented.”</p></div>
     </div>
   </section>
 
